@@ -96,6 +96,8 @@ namespace ToDoList_WebApi
             {
                 builder.AllowAnyOrigin();
                 builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+               // builder.AllowCredentials();
             });
             
             app.UseHttpsRedirection();

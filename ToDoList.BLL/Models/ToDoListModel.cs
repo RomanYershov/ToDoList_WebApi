@@ -10,7 +10,7 @@ namespace ToDoList.BLL.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CreationDate { get; set; }      
+        public DateTime CreationDate { get; set; }      
         public bool IsDone { get; set; }
         public List<Tag> Tags { get; set; }
         //public ToDoListModel() => Tags = new List<Tag>();

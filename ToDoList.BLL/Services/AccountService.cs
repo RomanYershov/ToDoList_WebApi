@@ -53,6 +53,7 @@ namespace ToDoList.BLL.Services
             catch (Exception e)
             {
                 Console.WriteLine(e.InnerException?.Message);
+                return null;
             }
             return accountModel;
         }

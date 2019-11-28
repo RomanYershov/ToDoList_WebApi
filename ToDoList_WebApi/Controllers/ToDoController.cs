@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ToDoList.BLL.Abstraction;
+using ToDoList.BLL.Helpers;
 using ToDoList.BLL.Models;
 
 
@@ -34,17 +35,18 @@ namespace ToDoList_WebApi.Controllers
             await Response.WriteAsync(JsonConvert.SerializeObject(StatusCode(StatusCodes.Status201Created, "")));
         }
         [HttpGet]
-        [Route("api/toggle")]
-        public void Toggle(int id)
+        [Route("api/toggle/{id}")]
+        public async Task Toggle(int id)
         {
             _service.Done(id);
+            await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Success()));
         }
         [HttpPost]
         [Route("api/addtag")]
         public async Task AddTag(TagModel model)
         {
             var res = _service.AddTag(model);
-            await Response.WriteAsync(JsonConvert.SerializeObject(res));
+            await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Success(res)));
         }
     }
 }

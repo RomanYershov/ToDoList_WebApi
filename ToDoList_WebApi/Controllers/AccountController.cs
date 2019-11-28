@@ -28,17 +28,21 @@ namespace ToDoList_WebApi.Controllers
         {
             if (account == null) await Response.WriteAsync("");//todo
             Response.ContentType = "application/json";
-            _accountService.Registration(account);
+            if (_accountService.Registration(account) == null)
+            {
+                await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Error($"Пользователь с именем {account.Login} уже существует")));
+                return;
+            }
             var identity = GetIdentity(account);
             if (identity == null)
             {
-                await Response.WriteAsync("Не верный логин или пароль");
+                await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Error("Не верный логин или пароль")));
                 return;
             }
             string jwtToken = GetToken(identity);
             AccountInfoModel accountInfo = _accountService.GetAccountInfo(account);
             accountInfo.Token = jwtToken;
-            await Response.WriteAsync(JsonConvert.SerializeObject(accountInfo,
+            await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Success(accountInfo),
                 new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
@@ -50,14 +54,14 @@ namespace ToDoList_WebApi.Controllers
             var identity = GetIdentity(account);
             if (identity == null)
             {
-                await Response.WriteAsync("Не верный логин или пароль");
+                await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Error("Не верный логин или пароль")));
                 return;
             }
 
             AccountInfoModel accountInfo = _accountService.GetAccountInfo(account);
             string jwtToken = GetToken(identity);
             accountInfo.Token = jwtToken;
-            await Response.WriteAsync(JsonConvert.SerializeObject(accountInfo,
+            await Response.WriteAsync(JsonConvert.SerializeObject(SimpleResponse.Success(accountInfo),
                 new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
