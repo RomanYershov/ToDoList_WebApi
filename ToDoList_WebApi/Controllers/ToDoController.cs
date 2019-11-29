@@ -32,7 +32,7 @@ namespace ToDoList_WebApi.Controllers
         public async Task AddTodo([FromBody] ToDoListModel model)
         {
             _service.Create(model, User.Identity.Name);
-            await Response.WriteAsync(JsonConvert.SerializeObject(StatusCode(StatusCodes.Status201Created, "")));
+            await Response.WriteAsync(JsonConvert.SerializeObject(StatusCode(StatusCodes.Status201Created)));
         }
         [HttpGet]
         [Route("api/toggle/{id}")]
