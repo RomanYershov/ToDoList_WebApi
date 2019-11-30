@@ -53,6 +53,7 @@ namespace ToDoList.BLL.Services
         {
             var user = _dbContext.Users.Include(x => x.ToDoLists).SingleOrDefault(x => x.Login == login);
             var newToDo = _mapper.Map<DAL.Entities.ToDoList>(model);
+            newToDo.CreationDate = DateTime.Now;
             user?.ToDoLists.Add(newToDo);
             _dbContext.SaveChanges();
             return model;
