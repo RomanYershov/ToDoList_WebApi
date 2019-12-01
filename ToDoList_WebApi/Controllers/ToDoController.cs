@@ -13,7 +13,7 @@ using ToDoList.BLL.Models;
 namespace ToDoList_WebApi.Controllers
 {
     [Authorize]
-    [ApiController] 
+    [ApiController]
     public class ToDoController : ControllerBase
     {
         private ITodoService _service;
@@ -38,6 +38,13 @@ namespace ToDoList_WebApi.Controllers
         public void Toggle(int id)
         {
             _service.Done(id);
+        }
+        [HttpPost]
+        [Route("api/addtag")]
+        public async Task AddTag(TagModel model)
+        {
+            var res = _service.AddTag(model);
+            await Response.WriteAsync(JsonConvert.SerializeObject(res));
         }
     }
 }

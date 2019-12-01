@@ -54,7 +54,6 @@ namespace ToDoList.BLL.Services
             var user = _dbContext.Users.Include(x => x.ToDoLists).SingleOrDefault(x => x.Login == login);
             var newToDo = _mapper.Map<DAL.Entities.ToDoList>(model);
             user?.ToDoLists.Add(newToDo);
-            _dbContext.ToDoLists.Add(newToDo);
             _dbContext.SaveChanges();
             return model;
         }
@@ -72,9 +71,18 @@ namespace ToDoList.BLL.Services
         public void Done(int id)
         {
             var todo = _dbContext.ToDoLists.Find(id);
-            if(todo == null) return;
+            if (todo == null) return;
             todo.IsDone = !todo.IsDone;
             _dbContext.SaveChanges();
+        }
+
+        public TagModel AddTag(TagModel model)
+        {
+            var todo = _dbContext.ToDoLists.Include(x => x.Tags).SingleOrDefault(x => x.Id == model.ToDoId);
+            var newTag = new Tag { Name = model.Name };
+            todo?.Tags.Add(newTag);
+            _dbContext.SaveChanges();
+            return model;
         }
     }
 }

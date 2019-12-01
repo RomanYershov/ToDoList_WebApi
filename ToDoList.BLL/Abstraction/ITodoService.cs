@@ -8,5 +8,6 @@ namespace ToDoList.BLL.Abstraction
     public interface ITodoService : IService<ToDoListModel>
     {
         void Done(int id);
+        TagModel AddTag( TagModel model);
     }
 }
