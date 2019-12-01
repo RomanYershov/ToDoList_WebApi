@@ -29,7 +29,8 @@ namespace ToDoList.BLL.Services
             var accountInfo = new AccountInfoModel
             {
                 Id = user.Id,
-                Role = user.Role
+                Role = user.Role,
+                Login = user.Login
             };
             return accountInfo;
         }

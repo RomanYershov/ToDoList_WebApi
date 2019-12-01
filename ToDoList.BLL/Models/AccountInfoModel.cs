@@ -8,6 +8,7 @@ namespace ToDoList.BLL.Models
     public class AccountInfoModel : ModelBase
     {
         public string Token { get; set; }
+        public string Login { get; set; }
         public string Role { get; set; }    
     }
 }
