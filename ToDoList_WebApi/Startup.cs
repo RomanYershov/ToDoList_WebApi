@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ToDoList.BLL.Abstraction;
+using ToDoList.BLL.Automapper;
 using ToDoList.BLL.Helpers;
 using ToDoList.BLL.Services;
 using ToDoList.DAL.EF;
@@ -58,10 +61,18 @@ namespace ToDoList_WebApi
                     };
                 });
 
+            var config = new MapperConfiguration(cnfg =>
+            {
+                cnfg.AddProfile(new AutomapperProfile());
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
 
+           // services.AddAutoMapper(typeof(Startup));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ITodoService, ToDoListService>();
 
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -86,7 +97,9 @@ namespace ToDoList_WebApi
                 builder.AllowAnyOrigin();
                 builder.AllowAnyMethod();
             });
+            
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
