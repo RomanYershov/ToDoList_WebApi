@@ -11,7 +11,7 @@ namespace ToDoList.DAL.Entities
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
         public string Role { get; set; }
-        public List<ToDoList> ToDoLists { get; set; }
+        public virtual List<ToDoList> ToDoLists { get; set; }
         public User() => ToDoLists = new List<ToDoList>();
     }
 }

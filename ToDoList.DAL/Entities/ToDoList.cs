@@ -11,7 +11,7 @@ namespace ToDoList.DAL.Entities
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }  
         public bool IsDone { get; set; }
-        public List<Tag> Tags { get; set; }
+        public virtual List<Tag> Tags { get; set; }
 
         public ToDoList()
         {
