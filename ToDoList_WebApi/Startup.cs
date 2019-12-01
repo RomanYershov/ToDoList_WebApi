@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ToDoList.BLL.Services;
 using ToDoList.DAL.EF;
 
 namespace ToDoList_WebApi
@@ -29,6 +30,9 @@ namespace ToDoList_WebApi
         {
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddScoped<IAccountService, AccountService>();
+
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ToDoListDbContext>(options => options.UseSqlServer(connectionString));
