@@ -5,6 +5,7 @@ using System.Text;
 using ToDoList.BLL.Helpers;
 using ToDoList.BLL.Models;
 using ToDoList.DAL.EF;
+using ToDoList.DAL.Entities;
 
 namespace ToDoList.BLL.Services
 {
@@ -23,12 +24,36 @@ namespace ToDoList.BLL.Services
 
         public AccountInfoModel GetAccountInfo(AccountModel accountModel)
         {
-            throw new NotImplementedException();
+            var user = _dbContext.Users.FirstOrDefault(x => x.Login == accountModel.Login);
+            if (user == null) return null;
+            var accountInfo = new AccountInfoModel
+            {
+                Id = user.Id,
+                Role = user.Role
+            };
+            return accountInfo;
         }
 
         public AccountModel Registration(AccountModel accountModel)
         {
-            throw new NotImplementedException();
+            var salt = HashingMethods.CreateSalt();
+            var user = new User
+            {
+                Login = accountModel.Login,
+                Salt = salt,
+                PasswordHash = HashingMethods.GenerateSha256Hash(accountModel.Password, salt),
+                Role = "user"
+            };
+            try
+            {
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException?.Message);
+            }
+            return accountModel;
         }
     }
 }
