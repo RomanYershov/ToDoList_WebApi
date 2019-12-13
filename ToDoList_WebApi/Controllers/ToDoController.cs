@@ -24,7 +24,7 @@ namespace ToDoList_WebApi.Controllers
         [Route("api/gettodos")]
         public async Task GetTodoLists()
         {
-            var todos = _service.Get(User.Identity.Name);
+            var todos = _service.Get(User.Identity.Name);//.OrderBy(x => x.IsDone).ThenByDescending(x => x.CreationDate);
             await Response.WriteAsync(JsonConvert.SerializeObject(todos, Formatting.None));
         }
         [HttpPost]
